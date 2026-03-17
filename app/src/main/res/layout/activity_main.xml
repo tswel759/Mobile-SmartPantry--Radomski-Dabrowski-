@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:background="#121212">
 
-    <!-- Nagłówek -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +17,6 @@
         android:textStyle="bold"
         android:textColor="#fccd49" />
 
-    <!-- Wyszukiwarka -->
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
@@ -32,7 +30,6 @@
         app:iconifiedByDefault="false"
         app:queryBackground="@android:color/transparent" />
 
-    <!-- Filtry – ChipGroup (wszystkie przyciski widoczne, zawijają się automatycznie) -->
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupFilters"
         android:layout_width="match_parent"
@@ -104,7 +101,6 @@
 
     </com.google.android.material.chip.ChipGroup>
 
-    <!-- Lista produktów -->
     <ListView
         android:id="@+id/listViewItems"
         android:layout_width="match_parent"
