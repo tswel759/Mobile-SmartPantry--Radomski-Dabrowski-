@@ -1,51 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/itemContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:background="@drawable/ic_launcher_background"
+    android:orientation="vertical"
+    android:padding="12dp">
 
-    <ImageView
-        android:id="@+id/imgProduct"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/txtName"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/txtQuantity"
-        app:layout_constraintStart_toEndOf="@id/imgProduct"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Pizza" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/txtCategory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="@id/txtName"
-        app:layout_constraintStart_toStartOf="@id/txtName"
-        app:layout_constraintTop_toBottomOf="@id/txtName"
-        tools:text="Food" />
+        <ImageView
+            android:id="@+id/ivProductImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_marginEnd="12dp" />
 
-    <TextView
-        android:id="@+id/txtQuantity"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nazwa produktu"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kategoria"
+                android:textSize="14sp"
+                android:textColor="#AAAAAA" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#fccd49"
+            android:layout_marginStart="12dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonPanel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Qty: 10" />
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Dodaj"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#276D32"
+            android:paddingHorizontal="16dp" />
+
+        <Button
+            android:id="@+id/buttonSubtract"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Odejmij"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#B11E24"
+            android:layout_marginStart="8dp"
+            android:paddingHorizontal="16dp" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Usuń"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#331302"
+            android:layout_marginStart="12dp"
+            android:paddingHorizontal="20dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

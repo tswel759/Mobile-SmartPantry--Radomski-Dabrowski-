@@ -6,92 +6,105 @@
     android:orientation="vertical"
     android:background="#121212">
 
-
+    <!-- Nagłówek -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#1f1f1f"
         android:text="Smart Pantry – Mars"
         android:textAlignment="center"
-        android:padding="12dp"
-        android:textSize="18sp"
+        android:padding="14dp"
+        android:textSize="19sp"
         android:textStyle="bold"
         android:textColor="#fccd49" />
 
-
+    <!-- Wyszukiwarka -->
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="Szukaj produktu..."
         android:background="#1f1f1f"
-        android:padding="8dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         app:iconifiedByDefault="false"
         app:queryBackground="@android:color/transparent" />
 
-
-    <HorizontalScrollView
+    <!-- Filtry – ChipGroup (wszystkie przyciski widoczne, zawijają się automatycznie) -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupFilters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:padding="8dp">
+        android:padding="8dp"
+        app:singleLine="false"
+        app:singleSelection="false"
+        app:chipSpacing="6dp"
+        app:chipSpacingHorizontal="6dp"
+        app:chipSpacingVertical="6dp">
 
-        <LinearLayout
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAll"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Wszystkie"
+            app:chipBackgroundColor="#6B4EFF"
+            app:chipStrokeColor="#FFFFFF"
+            app:chipStrokeWidth="1dp" />
 
-            <Button
-                android:id="@+id/btnFilterAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Wszystkie"
-                android:layout_marginEnd="6dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipDry"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sypkie"
+            app:chipBackgroundColor="#6B4EFF" />
 
-            <Button
-                android:id="@+id/btnFilterDry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sypkie"
-                android:layout_marginEnd="6dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipSpices"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Przyprawy"
+            app:chipBackgroundColor="#6B4EFF" />
 
-            <Button
-                android:id="@+id/btnFilterSpices"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Przyprawy"
-                android:layout_marginEnd="6dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipOils"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oleje"
+            app:chipBackgroundColor="#6B4EFF" />
 
-            <Button
-                android:id="@+id/btnFilterOils"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Oleje"
-                android:layout_marginEnd="6dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipCans"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Konserwy"
+            app:chipBackgroundColor="#6B4EFF" />
 
-            <Button
-                android:id="@+id/btnFilterCans"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Konserwy"
-                android:layout_marginEnd="6dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipBreakfast"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Śniadaniowe"
+            app:chipBackgroundColor="#6B4EFF" />
 
-            <Button
-                android:id="@+id/btnFilterBreakfast"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Śniadaniowe"
-                android:layout_marginEnd="6dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipDairy"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nabiał"
+            app:chipBackgroundColor="#6B4EFF" />
 
-            <Button
-                android:id="@+id/btnFilterDairy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nabiał" />
+    </com.google.android.material.chip.ChipGroup>
 
-        </LinearLayout>
-    </HorizontalScrollView>
-
+    <!-- Lista produktów -->
     <ListView
         android:id="@+id/listViewItems"
         android:layout_width="match_parent"
