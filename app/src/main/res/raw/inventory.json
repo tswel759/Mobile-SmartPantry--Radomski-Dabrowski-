@@ -1,16 +1,25 @@
-[
-  {
-    "uuid": "550e8400-e29b-41d4-a716-446655440000",
-    "name": "Liofilizowana Pizza",
-    "quantity": 10,
-    "category": "Food",
-    "imageRef": "ic_pizza"
-  },
-  {
-    "uuid": "721e8400-e29b-41d4-a716-446655440001",
-    "name": "Butla z tlenem",
-    "quantity": 3,
-    "category": "Life Support",
-    "imageRef": "ic_oxygen"
-  }
-]
+{
+  "produkty": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "name": "Liofilizowana Pizza",
+      "quantity": 10,
+      "category": "Produkty sypkie",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "721e8400-e29b-41d4-a716-446655440001",
+      "name": "Butla z tlenem",
+      "quantity": 3,
+      "category": "Wszystkie",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "832e8400-e29b-41d4-a716-446655440002",
+      "name": "Klucz francuski",
+      "quantity": 1,
+      "category": "Narzędzia",
+      "imageRef": "ic_launcher_foreground"
+    }
+  ]
+}

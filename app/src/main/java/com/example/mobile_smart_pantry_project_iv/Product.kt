@@ -7,7 +7,7 @@ import java.util.UUID
 data class Product(
     val id: String = UUID.randomUUID().toString(),
     val name: String,
-    val quantity: Int,
+    var quantity: Int,
     val category: String,
     val imageRef: String // Reference to drawable name or URL
 )

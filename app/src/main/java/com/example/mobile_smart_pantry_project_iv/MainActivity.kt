@@ -1,21 +1,22 @@
 package com.example.mobile_smart_pantry_project_iv
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.mobile_smart_pantry_project_iv.databinding.ActivityMainBinding
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import org.json.JSONObject
 import java.io.File
+import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ProductAdapter
-    private val productList = mutableListOf<Product>()
+    private val products = mutableListOf<Product>()
     private val fileName = "inventory.json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,72 +26,105 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Initialize ListView and Adapter
-        loadInventory()
-        adapter = ProductAdapter(this, productList)
-        binding.listView.adapter = adapter
+        adapter = ProductAdapter(this, products)
+        binding.listViewItems.adapter = adapter
 
-        // Add Button Logic
-        binding.btnAdd.setOnClickListener {
-            addProduct()
-        }
+        loadPantry()
+        setupSearchView()
+        setupChipFilters()
     }
 
-    private fun addProduct() {
-        val name = binding.etName.text.toString()
-        val qtyString = binding.etQuantity.text.toString()
-        val category = binding.etCategory.text.toString()
-
-        if (name.isBlank() || qtyString.isBlank() || category.isBlank()) {
-            Toast.makeText(this, "Mission Error: Fill all fields!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val quantity = qtyString.toIntOrNull() ?: 0
-        val newProduct = Product(
-            name = name,
-            quantity = quantity,
-            category = category,
-            imageRef = "ic_launcher_foreground" // Default for now
-        )
-
-        productList.add(newProduct)
-        adapter.notifyDataSetChanged()
-        saveInventory()
-
-        // Clear inputs
-        binding.etName.text.clear()
-        binding.etQuantity.text.clear()
-        binding.etCategory.text.clear()
-    }
-
-    private fun saveInventory() {
-        try {
-            val jsonString = Json.encodeToString(productList)
-            val file = File(filesDir, fileName)
-            file.writeText(jsonString)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun loadInventory() {
-        try {
-            val file = File(filesDir, fileName)
-            if (file.exists()) {
-                val jsonString = file.readText()
-                val loadedList: List<Product> = Json.decodeFromString(jsonString)
-                productList.clear()
-                productList.addAll(loadedList)
+    private fun setupSearchView() {
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter(newText ?: "")
+                return true
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        })
+    }
+
+    private fun setupChipFilters() {
+        binding.chipAll.setOnClickListener { adapter.filterByCategory("Wszystkie") }
+        binding.chipDry.setOnClickListener { adapter.filterByCategory("Produkty sypkie") }
+        binding.chipSpices.setOnClickListener { adapter.filterByCategory("Przyprawy") }
+        binding.chipOils.setOnClickListener { adapter.filterByCategory("Oleje") }
+        binding.chipCans.setOnClickListener { adapter.filterByCategory("Konserwy") }
+        binding.chipBreakfast.setOnClickListener { adapter.filterByCategory("Produkty śniadaniowe") }
+        binding.chipDairy.setOnClickListener { adapter.filterByCategory("Nabiał") }
+    }
+
+    private fun loadPantry() {
+        val file = File(filesDir, fileName)
+        if (file.exists()) {
+            try {
+                val jsonString = file.readText()
+                parseJson(jsonString)
+                adapter.updateList(products)
+                return
+            } catch (e: Exception) {
+                Log.e("MarsColony", e.message.toString())
+            }
         }
+
+        try {
+            val inputStream = resources.openRawResource(R.raw.inventory)
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            parseJson(jsonString)
+            adapter.updateList(products)
+            savePantry()
+        } catch (e: Exception) {
+            Log.e("MarsColony", e.message.toString())
+            Toast.makeText(this, "Nie udało się wczytać danych", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun parseJson(jsonString: String) {
+        products.clear()
+        val jsonObject = JSONObject(jsonString)
+        val jsonArray = jsonObject.getJSONArray("produkty")
+
+        for (i in 0 until jsonArray.length()) {
+            val obj = jsonArray.getJSONObject(i)
+            val product = Product(
+                id = obj.optString("id", UUID.randomUUID().toString()),
+                name = obj.getString("name"),
+                quantity = obj.getInt("quantity"),
+                category = obj.getString("category"),
+                imageRef = obj.optString("imageRef", "ic_launcher_foreground")
+            )
+            products.add(product)
+        }
+    }
+
+    fun savePantry() {
+        try {
+            val jsonArray = org.json.JSONArray()
+            for (p in products) {
+                val obj = JSONObject().apply {
+                    put("id", p.id)
+                    put("name", p.name)
+                    put("quantity", p.quantity)
+                    put("category", p.category)
+                    put("imageRef", p.imageRef)
+                }
+                jsonArray.put(obj)
+            }
+            val root = JSONObject().put("produkty", jsonArray)
+            File(filesDir, fileName).writeText(root.toString(2))
+        } catch (e: Exception) {
+            Log.e("MarsColony", e.message.toString())
+        }
+    }
+
+    fun refreshList() {
+        savePantry()
+        adapter.updateList(products)
     }
 }
