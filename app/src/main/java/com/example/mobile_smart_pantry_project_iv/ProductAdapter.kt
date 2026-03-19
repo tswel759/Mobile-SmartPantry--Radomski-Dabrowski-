@@ -19,9 +19,12 @@ class ProductAdapter(
     private var currentCategory: String = "Wszystkie"
     private var expandedPosition: Int = -1
 
+
     fun updateList(newList: List<Product>) {
-        originalProducts.clear()
-        originalProducts.addAll(newList)
+        if (newList !== originalProducts) {
+            originalProducts.clear()
+            originalProducts.addAll(newList)
+        }
         applyFilters()
     }
 
@@ -38,6 +41,7 @@ class ProductAdapter(
     private fun applyFilters() {
         var result = originalProducts.toList()
 
+
         if (currentCategory != "Wszystkie") {
             result = result.filter { it.category.equals(currentCategory, ignoreCase = true) }
         }
@@ -49,7 +53,6 @@ class ProductAdapter(
         }
 
         filteredProducts = result.toMutableList()
-        expandedPosition = -1
         notifyDataSetChanged()
     }
 
