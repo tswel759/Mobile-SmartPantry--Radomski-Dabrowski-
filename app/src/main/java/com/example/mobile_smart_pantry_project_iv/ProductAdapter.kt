@@ -18,6 +18,7 @@ class ProductAdapter(
     private var selectedCategory: String = "Wszystkie"
     private var expandedPosition: Int = -1
 
+
     private fun applyFilters() {
         filteredProducts = allProducts.filter { product ->
             val matchesCategory = selectedCategory == "Wszystkie" || product.category.equals(selectedCategory, ignoreCase = true)
