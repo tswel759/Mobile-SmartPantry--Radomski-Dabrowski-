@@ -1,15 +1,9 @@
 package com.example.mobile_smart_pantry_project_iv
-
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.mobile_smart_pantry_project_iv.databinding.ActivityMainBinding
 import org.json.JSONObject
 import java.io.File
-import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,16 +14,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         adapter = ProductAdapter(this, products)
         binding.listViewItems.adapter = adapter
@@ -51,8 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupChipFilters() {
         binding.chipGroupFilters.setOnCheckedStateChangeListener { _, checkedIds ->
-            val checkedId = checkedIds.firstOrNull()
-            val category = when (checkedId) {
+            val category = when (checkedIds.firstOrNull()) {
                 R.id.chipDry -> "Produkty sypkie"
                 R.id.chipSpices -> "Przyprawy"
                 R.id.chipOils -> "Oleje"
@@ -67,71 +52,44 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadPantry() {
         val file = File(filesDir, fileName)
-        
-        if (file.exists()) {
-            try {
-                val jsonString = file.readText()
-                if (jsonString.contains("Mąka Pszenna")) {
-                    parseJson(jsonString)
-                    adapter.updateList(products)
-                    return
-                }
-            } catch (e: Exception) {
-                Log.e("MarsColony", "Błąd odczytu: ${e.message}")
-            }
-        }
-
-        loadFromResources()
+        val jsonString = if (file.exists()) file.readText() else loadFromResources()
+        parseJson(jsonString)
+        adapter.updateList(products)
     }
 
-    private fun loadFromResources() {
-        try {
-            val inputStream = resources.openRawResource(R.raw.inventory)
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            parseJson(jsonString)
-            adapter.updateList(products)
-            savePantry()
-        } catch (e: Exception) {
-            Log.e("MarsColony", "Błąd ładowania z raw: ${e.message}")
-        }
+    private fun loadFromResources(): String {
+        val json = resources.openRawResource(R.raw.inventory).bufferedReader().use { it.readText() }
+        File(filesDir, fileName).writeText(json)
+        return json
     }
 
     private fun parseJson(jsonString: String) {
         products.clear()
-        val jsonObject = JSONObject(jsonString)
-        val jsonArray = jsonObject.getJSONArray("produkty")
-
+        val jsonArray = JSONObject(jsonString).getJSONArray("produkty")
         for (i in 0 until jsonArray.length()) {
             val obj = jsonArray.getJSONObject(i)
-            val product = Product(
-                id = obj.optString("id", UUID.randomUUID().toString()),
+            products.add(Product(
+                id = obj.getString("id"),
                 name = obj.getString("name"),
                 quantity = obj.getInt("quantity"),
                 category = obj.getString("category"),
-                imageRef = obj.optString("imageRef", "ic_launcher_foreground")
-            )
-            products.add(product)
+                imageRef = obj.getString("imageRef")
+            ))
         }
     }
 
     fun savePantry() {
-        try {
-            val jsonArray = org.json.JSONArray()
-            for (p in products) {
-                val obj = JSONObject().apply {
-                    put("id", p.id)
-                    put("name", p.name)
-                    put("quantity", p.quantity)
-                    put("category", p.category)
-                    put("imageRef", p.imageRef)
-                }
-                jsonArray.put(obj)
-            }
-            val root = JSONObject().put("produkty", jsonArray)
-            File(filesDir, fileName).writeText(root.toString(2))
-        } catch (e: Exception) {
-            Log.e("MarsColony", "Błąd zapisu: ${e.message}")
+        val jsonArray = org.json.JSONArray()
+        products.forEach { p ->
+            jsonArray.put(JSONObject().apply {
+                put("id", p.id)
+                put("name", p.name)
+                put("quantity", p.quantity)
+                put("category", p.category)
+                put("imageRef", p.imageRef)
+            })
         }
+        File(filesDir, fileName).writeText(JSONObject().put("produkty", jsonArray).toString(2))
     }
 
     fun refreshList() {

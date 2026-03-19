@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.core.content.ContextCompat
 import com.example.mobile_smart_pantry_project_iv.databinding.ItemProductBinding
 
 class ProductAdapter(
@@ -18,7 +17,6 @@ class ProductAdapter(
     private var currentQuery: String = ""
     private var currentCategory: String = "Wszystkie"
     private var expandedPosition: Int = -1
-
 
     fun updateList(newList: List<Product>) {
         if (newList !== originalProducts) {
@@ -41,15 +39,12 @@ class ProductAdapter(
     private fun applyFilters() {
         var result = originalProducts.toList()
 
-
         if (currentCategory != "Wszystkie") {
             result = result.filter { it.category.equals(currentCategory, ignoreCase = true) }
         }
 
         if (currentQuery.isNotEmpty()) {
-            result = result.filter {
-                it.name.contains(currentQuery, ignoreCase = true)
-            }
+            result = result.filter { it.name.contains(currentQuery, ignoreCase = true) }
         }
 
         filteredProducts = result.toMutableList()
@@ -74,18 +69,14 @@ class ProductAdapter(
         binding.tvQuantity.text = product.quantity.toString()
 
         val imageResId = context.resources.getIdentifier(product.imageRef, "drawable", context.packageName)
-        if (imageResId != 0) {
-            binding.ivProductImage.setImageResource(imageResId)
-        } else {
-            binding.ivProductImage.setImageResource(R.drawable.ic_launcher_foreground)
-        }
+        binding.ivProductImage.setImageResource(if (imageResId != 0) imageResId else R.drawable.ic_launcher_foreground)
 
         if (product.quantity < 5) {
             binding.root.setBackgroundColor(Color.parseColor("#FFCDD2"))
-            binding.tvQuantity.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
+            binding.tvQuantity.setTextColor(Color.RED)
         } else {
             binding.root.setBackgroundColor(Color.TRANSPARENT)
-            binding.tvQuantity.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_dark))
+            binding.tvQuantity.setTextColor(Color.parseColor("#4CAF50"))
         }
 
         binding.buttonPanel.visibility = if (position == expandedPosition) View.VISIBLE else View.GONE
@@ -96,24 +87,19 @@ class ProductAdapter(
         }
 
         binding.buttonAdd.setOnClickListener {
-            product.quantity += 1
-            notifyDataSetChanged()
+            product.quantity++
             (context as? MainActivity)?.refreshList()
         }
 
         binding.buttonSubtract.setOnClickListener {
             if (product.quantity > 0) {
-                product.quantity -= 1
-                notifyDataSetChanged()
+                product.quantity--
                 (context as? MainActivity)?.refreshList()
             }
         }
 
         binding.buttonDelete.setOnClickListener {
-            val actualProduct = originalProducts.find { it.id == product.id }
-            if (actualProduct != null) {
-                originalProducts.remove(actualProduct)
-            }
+            originalProducts.removeAll { it.id == product.id }
             applyFilters()
             (context as? MainActivity)?.refreshList()
         }
