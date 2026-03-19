@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val file = File(filesDir, fileName)
         val jsonString = if (file.exists()) file.readText() else loadFromResources()
         parseJson(jsonString)
-        adapter.updateList(products)
+        adapter.updateList()
     }
 
     private fun loadFromResources(): String {
@@ -94,6 +94,6 @@ class MainActivity : AppCompatActivity() {
 
     fun refreshList() {
         savePantry()
-        adapter.updateList(products)
+        adapter.updateList()
     }
 }
