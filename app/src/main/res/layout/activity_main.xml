@@ -7,6 +7,7 @@
     android:background="#121212">
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#1f1f1f"
@@ -36,7 +37,8 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         app:singleLine="false"
-        app:singleSelection="false"
+        app:singleSelection="true"
+        app:selectionRequired="true"
         app:chipSpacing="6dp"
         app:chipSpacingHorizontal="6dp"
         app:chipSpacingVertical="6dp">
@@ -47,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wszystkie"
+            android:checked="true"
             app:chipBackgroundColor="#6B4EFF"
             app:chipStrokeColor="#FFFFFF"
             app:chipStrokeWidth="1dp" />

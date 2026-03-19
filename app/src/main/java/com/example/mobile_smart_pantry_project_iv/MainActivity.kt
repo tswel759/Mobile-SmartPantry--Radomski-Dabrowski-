@@ -2,7 +2,6 @@ package com.example.mobile_smart_pantry_project_iv
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -51,28 +50,41 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupChipFilters() {
-        binding.chipAll.setOnClickListener { adapter.filterByCategory("Wszystkie") }
-        binding.chipDry.setOnClickListener { adapter.filterByCategory("Produkty sypkie") }
-        binding.chipSpices.setOnClickListener { adapter.filterByCategory("Przyprawy") }
-        binding.chipOils.setOnClickListener { adapter.filterByCategory("Oleje") }
-        binding.chipCans.setOnClickListener { adapter.filterByCategory("Konserwy") }
-        binding.chipBreakfast.setOnClickListener { adapter.filterByCategory("Produkty śniadaniowe") }
-        binding.chipDairy.setOnClickListener { adapter.filterByCategory("Nabiał") }
+        binding.chipGroupFilters.setOnCheckedStateChangeListener { _, checkedIds ->
+            val checkedId = checkedIds.firstOrNull()
+            val category = when (checkedId) {
+                R.id.chipDry -> "Produkty sypkie"
+                R.id.chipSpices -> "Przyprawy"
+                R.id.chipOils -> "Oleje"
+                R.id.chipCans -> "Konserwy"
+                R.id.chipBreakfast -> "Produkty śniadaniowe"
+                R.id.chipDairy -> "Nabiał"
+                else -> "Wszystkie"
+            }
+            adapter.filterByCategory(category)
+        }
     }
 
     private fun loadPantry() {
         val file = File(filesDir, fileName)
+        
         if (file.exists()) {
             try {
                 val jsonString = file.readText()
-                parseJson(jsonString)
-                adapter.updateList(products)
-                return
+                if (jsonString.contains("Mąka Pszenna")) {
+                    parseJson(jsonString)
+                    adapter.updateList(products)
+                    return
+                }
             } catch (e: Exception) {
-                Log.e("MarsColony", e.message.toString())
+                Log.e("MarsColony", "Błąd odczytu: ${e.message}")
             }
         }
 
+        loadFromResources()
+    }
+
+    private fun loadFromResources() {
         try {
             val inputStream = resources.openRawResource(R.raw.inventory)
             val jsonString = inputStream.bufferedReader().use { it.readText() }
@@ -80,8 +92,7 @@ class MainActivity : AppCompatActivity() {
             adapter.updateList(products)
             savePantry()
         } catch (e: Exception) {
-            Log.e("MarsColony", e.message.toString())
-            Toast.makeText(this, "Nie udało się wczytać danych", Toast.LENGTH_SHORT).show()
+            Log.e("MarsColony", "Błąd ładowania z raw: ${e.message}")
         }
     }
 
@@ -119,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             val root = JSONObject().put("produkty", jsonArray)
             File(filesDir, fileName).writeText(root.toString(2))
         } catch (e: Exception) {
-            Log.e("MarsColony", e.message.toString())
+            Log.e("MarsColony", "Błąd zapisu: ${e.message}")
         }
     }
 

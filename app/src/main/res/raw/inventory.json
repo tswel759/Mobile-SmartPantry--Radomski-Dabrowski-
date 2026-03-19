@@ -2,23 +2,93 @@
   "produkty": [
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
-      "name": "Liofilizowana Pizza",
-      "quantity": 10,
+      "name": "Mąka Pszenna",
+      "quantity": 12,
       "category": "Produkty sypkie",
       "imageRef": "ic_launcher_foreground"
     },
     {
-      "id": "721e8400-e29b-41d4-a716-446655440001",
-      "name": "Butla z tlenem",
-      "quantity": 3,
-      "category": "Wszystkie",
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "name": "Ryż Jaśminowy",
+      "quantity": 8,
+      "category": "Produkty sypkie",
       "imageRef": "ic_launcher_foreground"
     },
     {
-      "id": "832e8400-e29b-41d4-a716-446655440002",
-      "name": "Klucz francuski",
-      "quantity": 1,
-      "category": "Narzędzia",
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "name": "Kasza Gryczana",
+      "quantity": 5,
+      "category": "Produkty sypkie",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "721e8400-e29b-41d4-a716-446655440003",
+      "name": "Sól Morska",
+      "quantity": 2,
+      "category": "Przyprawy",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "721e8400-e29b-41d4-a716-446655440004",
+      "name": "Pieprz Czarny",
+      "quantity": 3,
+      "category": "Przyprawy",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "832e8400-e29b-41d4-a716-446655440005",
+      "name": "Oliwa z Oliwek",
+      "quantity": 4,
+      "category": "Oleje",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "832e8400-e29b-41d4-a716-446655440006",
+      "name": "Olej Rzepakowy",
+      "quantity": 2,
+      "category": "Oleje",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "943e8400-e29b-41d4-a716-446655440007",
+      "name": "Fasolka w Sosie",
+      "quantity": 10,
+      "category": "Konserwy",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "943e8400-e29b-41d4-a716-446655440008",
+      "name": "Tuńczyk w Oleju",
+      "quantity": 15,
+      "category": "Konserwy",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "a54e8400-e29b-41d4-a716-446655440009",
+      "name": "Płatki Owsiane",
+      "quantity": 7,
+      "category": "Produkty śniadaniowe",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "a54e8400-e29b-41d4-a716-446655440010",
+      "name": "Musli z Owocami",
+      "quantity": 4,
+      "category": "Produkty śniadaniowe",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "b65e8400-e29b-41d4-a716-446655440011",
+      "name": "Mleko UHT 3.2%",
+      "quantity": 12,
+      "category": "Nabiał",
+      "imageRef": "ic_launcher_foreground"
+    },
+    {
+      "id": "b65e8400-e29b-41d4-a716-446655440012",
+      "name": "Ser Żółty Gouda",
+      "quantity": 3,
+      "category": "Nabiał",
       "imageRef": "ic_launcher_foreground"
     }
   ]
